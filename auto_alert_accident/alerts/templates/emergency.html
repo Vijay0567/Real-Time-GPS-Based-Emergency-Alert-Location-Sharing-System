@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Emergency Alert</title>
+</head>
+<body>
+
+<h2>🚨 Emergency Alert System</h2>
+
+<button onclick="sendAlert()">Send Emergency Alert</button>
+
+<script>
+function sendAlert() {
+    if (!navigator.geolocation) {
+        alert("Geolocation is not supported by your browser");
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        function(position) {
+
+            fetch("/save-alert/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.status);
+
+                
+                window.location.href = "/map/";
+            })
+            .catch(error => {
+                alert("Error sending alert!");
+                console.error(error);
+            });
+
+        },
+        function(error) {
+            alert("Unable to retrieve location");
+        }
+    );
+}
+</script>
+
+</body>
+</html>
