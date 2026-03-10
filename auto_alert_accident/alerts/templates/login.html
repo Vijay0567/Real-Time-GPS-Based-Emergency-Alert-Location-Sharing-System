@@ -1,0 +1,48 @@
+{% extends 'auth_base.html' %}
+
+{% block content %}
+
+<div class="logo">
+<i class="fa-solid fa-car-burst"></i>
+</div>
+
+<h3 class="auth-title">Auto Alert System</h3>
+
+{% if error %}
+<div class="alert alert-danger text-center">
+{{ error }}
+</div>
+{% endif %}
+
+<form method="POST">
+
+{% csrf_token %}
+
+<div class="mb-3">
+<input type="text"
+name="username"
+placeholder="Username"
+class="form-control"
+required>
+</div>
+
+<div class="mb-3">
+<input type="password"
+name="password"
+placeholder="Password"
+class="form-control"
+required>
+</div>
+
+<button class="btn auth-btn w-100">
+Login
+</button>
+
+</form>
+
+<div class="register-link text-center mt-3">
+New user?
+<a href="/register/">Create Account</a>
+</div>
+
+{% endblock %}

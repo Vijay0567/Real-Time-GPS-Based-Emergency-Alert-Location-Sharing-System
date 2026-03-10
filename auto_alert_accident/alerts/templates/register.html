@@ -1,0 +1,166 @@
+{% extends 'auth_base.html' %}
+
+{% block content %}
+
+<style>
+
+body{
+background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+}
+
+.form-section{
+width:100%;
+}
+
+/* input wrapper */
+.input-group{
+position:relative;
+}
+
+/* icon styling */
+.icon{
+position:absolute;
+top:50%;
+left:14px;
+transform:translateY(-50%);
+color:#2563eb;
+font-size:16px;
+z-index:5;
+pointer-events:none;
+}
+
+/* input spacing */
+.input-group input,
+.input-group select{
+padding-left:45px;
+height:48px;
+border-radius:8px;
+}
+
+/* focus effect */
+.form-control:focus{
+box-shadow:0 0 8px rgba(37,99,235,0.5);
+border-color:#2563eb;
+}
+
+/* button */
+.register-btn{
+background:#2563eb;
+border:none;
+padding:12px;
+border-radius:10px;
+font-weight:500;
+color:white;
+transition:0.3s;
+}
+
+.register-btn:hover{
+background:#1e40af;
+transform:scale(1.05);
+}
+
+</style>
+
+<div class="form-section">
+
+<div class="text-center mb-4">
+
+<i class="fa-solid fa-user-plus fa-2x text-primary"></i>
+
+<h3 class="mt-2">Create Account</h3>
+
+<p class="text-muted">
+Register to use Auto Alert System
+</p>
+
+</div>
+
+<form method="POST">
+{% csrf_token %}
+
+<div class="input-group mb-3">
+  <span class="input-group-text"><i class="fa fa-user"></i></span>
+  <input class="form-control" name="name" placeholder="Full Name" required>
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text"><i class="fa fa-birthday-cake"></i></span>
+  <input class="form-control" type="number" name="age" placeholder="Age" required>
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text"><i class="fa fa-venus-mars"></i></span>
+  <select class="form-control" name="sex" required>
+    <option value="">Select Gender</option>
+    <option>Male</option>
+    <option>Female</option>
+    <option>Other</option>
+  </select>
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text"><i class="fa fa-phone"></i></span>
+  <input class="form-control" name="phone" placeholder="Phone Number" required>
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+  <input class="form-control" type="email" name="email" placeholder="Email Address" required>
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text"><i class="fa fa-tint"></i></span>
+  <select class="form-control" name="blood" required>
+    <option value="">Blood Group</option>
+    <option>A+</option>
+    <option>A-</option>
+    <option>B+</option>
+    <option>B-</option>
+    <option>O+</option>
+    <option>O-</option>
+    <option>AB+</option>
+    <option>AB-</option>
+  </select>
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text"><i class="fa fa-id-card"></i></span>
+  <input class="form-control" name="username" placeholder="Username" required>
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text"><i class="fa fa-lock"></i></span>
+  <input class="form-control" type="password" name="password" placeholder="Password" required>
+</div>
+
+<button class="btn btn-primary w-100">Create Account</button>
+
+</form>
+
+
+<p class="text-center mt-3">
+Already have an account?
+<a href="/login/">Login</a>
+</p>
+
+</div>
+
+<script>
+
+/* input animation */
+
+document.querySelectorAll(".form-control").forEach(input => {
+
+input.addEventListener("focus",()=>{
+input.style.transform="scale(1.02)";
+});
+
+input.addEventListener("blur",()=>{
+input.style.transform="scale(1)";
+});
+
+});
+
+</script>
+
+{% endblock %}

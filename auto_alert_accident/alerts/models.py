@@ -1,15 +1,19 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-
 class Profile(models.Model):
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    phone_number = models.CharField(max_length=15)
-    blood_group = models.CharField(max_length=5)
+
+    name = models.CharField(max_length=100, null=True, blank=True)
+    age = models.IntegerField(null=True, blank=True)
+    sex = models.CharField(max_length=10, null=True, blank=True)
+    phone_number = models.CharField(max_length=15, null=True, blank=True)
+    email = models.EmailField(null=True, blank=True)
+    blood_group = models.CharField(max_length=5, null=True, blank=True)
 
     def __str__(self):
-        return self.user.username
-
+        return self.name
 
 class EmergencyContact(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

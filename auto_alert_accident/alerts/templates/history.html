@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Alert History</h2>
+
+<table class="table table-bordered">
+
+<tr>
+<th>Latitude</th>
+<th>Longitude</th>
+<th>Time</th>
+<th>Status</th>
+</tr>
+
+{% for alert in alerts %}
+
+<tr>
+<td>{{ alert.latitude }}</td>
+<td>{{ alert.longitude }}</td>
+<td>{{ alert.timestamp }}</td>
+<td>{{ alert.status }}</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+{% endblock %}

@@ -1,45 +1,27 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Accident Map Dashboard</title>
+{% extends 'base.html' %}
 
-    
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+{% block content %}
 
-    <style>
-        #map {
-            height: 90vh;
-            width: 100%; 
-        }
-    </style>
-</head>
-<body>
-
-<h2>🚨 Live Accident Map Dashboard</h2>
+<h2>Accident Map Dashboard</h2>
 
 <div id="map"></div>
 
-
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
 <script>
-    var map = L.map('map').setView([20.5937, 78.9629], 5); // Default India center
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors'
-    }).addTo(map);
+let map = L.map('map').setView([20,78],5);
 
-    {% for accident in accidents %}
-        L.marker([{{ accident.latitude }}, {{ accident.longitude }}])
-            .addTo(map)
-            .bindPopup(
-                "<b>Accident Detected</b><br>" +
-                "Latitude: {{ accident.latitude }}<br>" +
-                "Longitude: {{ accident.longitude }}<br>" +
-                "Time: {{ accident.timestamp }}"
-            );
-    {% endfor %}
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+attribution:'© OpenStreetMap'
+}).addTo(map);
+
+{% for alert in alerts %}
+
+L.marker([{{alert.latitude}},{{alert.longitude}}])
+.addTo(map)
+.bindPopup("Accident Location");
+
+{% endfor %}
+
 </script>
 
-</body>
-</html>
+{% endblock %}

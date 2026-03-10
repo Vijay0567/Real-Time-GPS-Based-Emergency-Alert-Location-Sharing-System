@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+
+.dashboard-title{
+font-weight:600;
+margin-bottom:25px;
+}
+
+.card-box{
+border-radius:12px;
+transition:0.3s;
+cursor:pointer;
+}
+
+.card-box:hover{
+transform:translateY(-5px);
+box-shadow:0 8px 20px rgba(0,0,0,0.15);
+}
+
+.emergency-btn{
+background:#dc2626;
+border:none;
+padding:18px;
+font-size:20px;
+border-radius:12px;
+transition:0.3s;
+}
+
+.emergency-btn:hover{
+background:#991b1b;
+transform:scale(1.05);
+}
+
+</style>
+
+<h2 class="dashboard-title">User Dashboard</h2>
+
+<div class="row">
+
+<div class="col-md-4">
+
+<div class="card card-box shadow text-center">
+
+<div class="card-body">
+
+<h5>Total Alerts</h5>
+
+<h2>{{ alerts }}</h2>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="card card-box shadow text-center">
+
+<div class="card-body">
+
+<h5>Emergency Contacts</h5>
+
+<h2>{{ contacts }}</h2>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<hr class="my-4">
+
+<div class="text-center">
+
+<button class="btn emergency-btn text-white"
+onclick="triggerAlert()">
+
+🚨 SEND EMERGENCY ALERT
+
+</button>
+
+</div>
+
+<script>
+
+function triggerAlert(){
+
+alert("Emergency alert triggered! Location will be sent.");
+
+window.location.href="/alert/";
+
+}
+
+</script>
+
+{% endblock %}

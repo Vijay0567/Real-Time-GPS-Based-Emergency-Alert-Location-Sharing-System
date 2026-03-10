@@ -1,53 +1,55 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Emergency Alert</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-<h2>🚨 Emergency Alert System</h2>
+{% block content %}
 
-<button onclick="sendAlert()">Send Emergency Alert</button>
+<h2>Emergency Alert</h2>
+
+<button onclick="sendAlert()" class="btn btn-danger btn-lg">
+🚨 Send Emergency Alert
+</button>
+
+<div id="map" class="mt-4"></div>
 
 <script>
-function sendAlert() {
-    if (!navigator.geolocation) {
-        alert("Geolocation is not supported by your browser");
-        return;
-    }
 
-    navigator.geolocation.getCurrentPosition(
-        function(position) {
+function sendAlert(){
 
-            fetch("/save-alert/", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    latitude: position.coords.latitude,
-                    longitude: position.coords.longitude
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert(data.status);
+navigator.geolocation.getCurrentPosition(function(position){
 
-                
-                window.location.href = "/map/";
-            })
-            .catch(error => {
-                alert("Error sending alert!");
-                console.error(error);
-            });
+let lat = position.coords.latitude;
+let lon = position.coords.longitude;
 
-        },
-        function(error) {
-            alert("Unable to retrieve location");
-        }
-    );
+fetch("/save-alert/",{
+method:"POST",
+headers:{
+"Content-Type":"application/json",
+"X-CSRFToken":"{{ csrf_token }}"
+},
+body:JSON.stringify({
+latitude:lat,
+longitude:lon
+})
+})
+
+.then(res=>res.json())
+.then(data=>{
+
+let map = L.map('map').setView([lat,lon],15);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+attribution:'© OpenStreetMap'
+}).addTo(map);
+
+L.marker([lat,lon]).addTo(map)
+.bindPopup("Emergency Location")
+.openPopup();
+
+});
+
+});
+
 }
+
 </script>
 
-</body>
-</html>
+{% endblock %}

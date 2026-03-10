@@ -1,0 +1,36 @@
+<h2>Welcome {{profile.name}}</h2>
+
+<p>Blood Group: {{profile.blood_group}}</p>
+
+<button onclick="sendAlert()">🚨 Emergency Alert</button>
+
+<script>
+
+function sendAlert(){
+
+navigator.geolocation.getCurrentPosition(function(pos){
+
+fetch("/save-alert/",{
+
+method:"POST",
+headers:{
+"Content-Type":"application/json",
+"X-CSRFToken":"{{csrf_token}}"
+},
+
+body:JSON.stringify({
+
+latitude:pos.coords.latitude,
+longitude:pos.coords.longitude
+
+})
+
+})
+
+alert("Emergency Alert Sent!")
+
+})
+
+}
+
+</script>
