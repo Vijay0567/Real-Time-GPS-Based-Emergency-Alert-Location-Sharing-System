@@ -68,8 +68,11 @@ def user_login(request):
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
-
+            print("LOGIN SUCCESSFUL")
             login(request, user)
+
+            if user.is_superuser:
+                return redirect("/admin-dashboard/")
 
             # ADMIN LOGIN
             if user.is_superuser:
@@ -245,13 +248,19 @@ def notify_guardians(user, lat, lon):
         pass
     
 from .models import AccidentReport, Profile
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def admin_dashboard(request):
+
+    if not request.user.is_superuser:
+        return redirect("/login/")  # prevent normal users
 
     alerts = AccidentReport.objects.select_related("user").all()
 
-    return render(request,"admin_dashboard.html",{"alerts":alerts})
-
+    return render(request, "admin_dashboard.html", {
+        "alerts": alerts
+    })
 from django.contrib.auth.decorators import login_required
 
 @login_required
