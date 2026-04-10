@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Auto Alert System</title>
+
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<style>
+
+body{
+height:100vh;
+margin:0;
+font-family:Segoe UI, sans-serif;
+overflow-x:hidden;
+position:relative;
+background-image: 
+linear-gradient(rgba(15,32,39,0.85), rgba(32,58,67,0.85)),
+url('https://images.unsplash.com/photo-1558618047-3c8c76ca7e47?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+background-size: cover;
+background-position: center;
+background-attachment: fixed;
+display:flex;
+justify-content:center;
+align-items:center;
+animation: subtleShift 20s ease-in-out infinite;
+}
+
+@keyframes subtleShift {
+0%, 100% { background-position: center; }
+50% { background-position: center 10%; }
+}
+
+.gps-particles {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+pointer-events: none;
+z-index: 1;
+}
+
+.gps-particle {
+position: absolute;
+width: 4px;
+height: 4px;
+background: rgba(37,99,235,0.7);
+border-radius: 50%;
+animation: float 6s linear infinite;
+}
+
+@keyframes float {
+0% {
+  opacity: 0;
+  transform: translateY(100vh) scale(0);
+}
+10% {
+  opacity: 1;
+  transform: translateY(90vh) scale(1);
+}
+90% {
+  opacity: 1;
+  transform: translateY(10vh) scale(1);
+}
+100% {
+  opacity: 0;
+  transform: translateY(0vh) scale(0);
+}
+}
+
+/* Parallax on scroll */
+.parallax-bg {
+transition: background-position 0.5s ease;
+}
+
+.auth-container{
+width:420px;
+background: rgba(255,255,255,0.95);
+backdrop-filter: blur(10px);
+border-radius:16px;
+padding:40px;
+box-shadow:0 20px 40px rgba(0,0,0,0.3);
+animation:fadeInUp 1s ease-out;
+position:relative;
+z-index:10;
+border:1px solid rgba(255,255,255,0.2);
+}
+
+.auth-container::before {
+content: '';
+position: absolute;
+top: -2px;
+left: -2px;
+right: -2px;
+bottom: -2px;
+background: linear-gradient(45deg, #2563eb, #1e40af, #2563eb);
+border-radius: 18px;
+z-index: -1;
+opacity: 0;
+transition: opacity 0.3s ease;
+}
+
+.auth-container:hover::before {
+opacity: 1;
+}
+
+.auth-title{
+text-align:center;
+margin-bottom:25px;
+font-weight:600;
+color:#333;
+position:relative;
+}
+
+.auth-title::after {
+content: '';
+position: absolute;
+bottom: -8px;
+left: 50%;
+transform: translateX(-50%);
+width: 50px;
+height: 3px;
+background: linear-gradient(90deg, #2563eb, #1e40af);
+border-radius: 2px;
+}
+
+.logo{
+text-align:center;
+font-size:32px;
+color:#2563eb;
+margin-bottom:15px;
+animation: pulse 2s infinite;
+filter: drop-shadow(0 0 10px rgba(37,99,235,0.5));
+}
+
+@keyframes pulse {
+0%, 100% { transform: scale(1); }
+50% { transform: scale(1.05); }
+}
+
+.form-control{
+border-radius:10px;
+padding:14px;
+border:2px solid #e5e7eb;
+transition: all 0.3s ease;
+box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.form-control:focus{
+box-shadow:0 0 15px rgba(37,99,235,0.6), 0 4px 12px rgba(0,0,0,0.15);
+border-color:#2563eb;
+transform: translateY(-2px);
+}
+
+.auth-btn{
+background: linear-gradient(45deg, #2563eb, #1e40af);
+border:none;
+border-radius:12px;
+padding:14px;
+font-weight:600;
+transition: all 0.4s ease;
+color:white;
+position:relative;
+overflow:hidden;
+box-shadow: 0 4px 15px rgba(37,99,235,0.4);
+}
+
+.auth-btn:hover{
+transform: translateY(-3px) scale(1.03);
+box-shadow: 0 8px 25px rgba(37,99,235,0.6);
+}
+
+.auth-btn::before {
+content: '';
+position: absolute;
+top: 0;
+left: -100%;
+width: 100%;
+height: 100%;
+background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+transition: left 0.5s;
+}
+
+.auth-btn:hover::before {
+left: 100%;
+}
+
+@keyframes fadeInUp{
+from{
+opacity:0;
+transform:translateY(30px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+@media (max-width: 480px) {
+.auth-container {
+width: 95%;
+padding: 30px 20px;
+}
+}
+
+.emergency-glow {
+color: #ef4444;
+animation: emergencyPulse 1.5s infinite;
+text-shadow: 0 0 10px rgba(239,68,68,0.5);
+}
+
+@keyframes emergencyPulse {
+0%, 100% { opacity: 1; }
+50% { opacity: 0.7; }
+}
+
+</style>
+
+</head>
+
+<body class="parallax-bg">
+
+<!-- GPS Particles Background -->
+<div class="gps-particles" id="particles"></div>
+
+<div class="auth-container">
+
+{% block content %}
+{% endblock %}
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+// Parallax Effect
+window.addEventListener('scroll', () => {
+const scrolled = window.pageYOffset;
+const parallax = document.querySelector('.parallax-bg');
+if (parallax) {
+parallax.style.backgroundPositionY = `${scrolled * 0.5}px`;
+}
+});
+
+// Create GPS Particles
+function createParticles() {
+const particlesContainer = document.getElementById('particles');
+for (let i = 0; i < 30; i++) {
+const particle = document.createElement('div');
+particle.className = 'gps-particle';
+particle.style.left = Math.random() * 100 + '%';
+particle.style.animationDelay = Math.random() * 6 + 's';
+particle.style.animationDuration = (Math.random() * 3 + 4) + 's';
+particlesContainer.appendChild(particle);
+}
+}
+createParticles();
+
+// Enhanced Input Effects
+document.addEventListener('DOMContentLoaded', () => {
+document.querySelectorAll('.form-control').forEach((input, index) => {
+input.addEventListener('focus', () => {
+input.parentElement.style.transform = 'scale(1.02)';
+});
+input.addEventListener('blur', () => {
+input.parentElement.style.transform = 'scale(1)';
+});
+});
+
+// Emergency theme particles speed up on button hover
+document.querySelectorAll('.auth-btn').forEach(btn => {
+btn.addEventListener('mouseenter', () => {
+document.querySelectorAll('.gps-particle').forEach(p => {
+p.style.animationDuration = '2s';
+});
+});
+});
+});
+
+</script>
+
+</body>
+</html>

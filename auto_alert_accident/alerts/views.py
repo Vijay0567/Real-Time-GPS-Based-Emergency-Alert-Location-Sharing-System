@@ -46,8 +46,8 @@ def register(request):
             email=email,
             blood_group=blood
         )
-
-        return render(request, "register_success.html")
+        # Post/Redirect/Get: redirect to login to avoid stale CSRF tokens
+        return redirect('/login/')
     return render(request,"register.html")
 # -----------------------------
 # USER LOGIN
