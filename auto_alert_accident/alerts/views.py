@@ -2,6 +2,7 @@
 # CORE IMPORTS
 # -----------------------------
 from django.shortcuts import render, redirect
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
@@ -98,6 +99,7 @@ def add_emergency_contact(request):
         phone = request.POST.get('phone')
         email = request.POST.get('email')
         EmergencyContact.objects.create(user=request.user, name=name, phone_number=phone, email=email)
+        messages.success(request, 'Emergency contact saved — you are now protected.')
         return redirect('/user-dashboard/')
 
     return render(request, 'add_emergency_contact.html')
