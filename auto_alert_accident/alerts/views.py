@@ -280,3 +280,14 @@ def get_alerts(request):
         })
 
     return JsonResponse(data, safe=False)
+
+
+from django.contrib.auth.models import User
+from django.http import HttpResponse
+
+def create_user(request):
+    if not User.objects.filter(username="Vijay").exists():
+        User.objects.create_superuser("Vijay", "vijaygampala0@gmail.com", "Vijay@2006")
+        return HttpResponse("Admin created successfully ✅")
+    else:
+        return HttpResponse("Admin already exists ⚠️")
