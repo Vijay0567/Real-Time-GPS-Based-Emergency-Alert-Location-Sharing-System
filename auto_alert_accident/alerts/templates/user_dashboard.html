@@ -1,56 +1,48 @@
-<h2>Welcome {{profile.name}}</h2>
+{% extends 'base.html' %}
 
-<p>Blood Group: {{profile.blood_group}}</p>
+{% block content %}
 
-<button onclick="sendAlert()">🚨 Emergency Alert</button>
+<style>
+	/* Hide main sidebar for the user dashboard and make content full-width */
+	.sidebar{display:none !important}
+	.col-md-10.p-4{flex:0 0 100% !important;max-width:100% !important}
+	/* Ensure centered area stays centered when sidebar is hidden */
+	.d-flex.align-items-center.justify-content-center{padding:20px}
+</style>
+
+<div class="d-flex align-items-center justify-content-center" style="height:70vh;">
+	<div class="text-center">
+		<h2 style="font-weight:700;margin-bottom:8px;">Welcome, {{ profile.name }}</h2>
+		<p style="color:#6c757d;margin-bottom:22px;">If you are in danger, press the Emergency Button below — your location will be sent to your emergency contacts and the admin team.</p>
+
+		<button id="sosBtn" class="btn btn-danger btn-lg" style="padding:22px 42px;font-size:20px;border-radius:14px;box-shadow:0 8px 30px rgba(220,53,69,0.18);" onclick="sendAlert()">🚨 Emergency Alert</button>
+
+	</div>
+</div>
 
 <script>
-
 function sendAlert(){
-
-navigator.geolocation.getCurrentPosition(function(pos){
-
-fetch("/save-alert/",{
-
-method:"POST",
-headers:{
-"Content-Type":"application/json",
-// Read CSRF token from cookie per Django docs
-"X-CSRFToken": (function(){
-	function getCookie(name){
-		let cookieValue = null;
-		if (document.cookie && document.cookie !== '') {
-			const cookies = document.cookie.split(';');
-			for (let i = 0; i < cookies.length; i++) {
-				const cookie = cookies[i].trim();
-				if (cookie.substring(0, name.length + 1) === (name + '=')) {
-					cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-					break;
-				}
-			}
-		}
-		return cookieValue;
+	if (!navigator.geolocation){
+		alert('Geolocation is not supported by your browser');
+		return;
 	}
-	return getCookie('csrftoken');
-})()
-},
-
-// Ensure cookies (session & CSRF) are sent with the request
-credentials: 'same-origin',
-
-body:JSON.stringify({
-
-latitude:pos.coords.latitude,
-longitude:pos.coords.longitude
-
-})
-
-})
-
-alert("Emergency Alert Sent!")
-
-})
-
+	navigator.geolocation.getCurrentPosition(function(pos){
+		fetch('/save-alert/',{
+			method:'POST',
+			headers:{
+				'Content-Type':'application/json',
+				'X-CSRFToken':'{{csrf_token}}'
+			},
+			body: JSON.stringify({latitude: pos.coords.latitude, longitude: pos.coords.longitude})
+		}).then(function(){
+			alert('Emergency Alert Sent!');
+		}).catch(function(){
+			alert('Failed to send alert.');
+		});
+	}, function(err){
+		alert('Unable to read your location: ' + (err.message || err.code));
+	});
 }
-
 </script>
+
+{% endblock %}

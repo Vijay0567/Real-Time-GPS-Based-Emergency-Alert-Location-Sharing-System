@@ -1,3 +1,6 @@
+# -----------------------------
+# CORE IMPORTS
+# -----------------------------
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -6,13 +9,9 @@ from django.contrib.auth.models import User
 from .models import AccidentReport, EmergencyContact, Profile
 import json
 
-
 # -----------------------------
 # USER REGISTRATION
 # -----------------------------
-from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
-from .models import Profile
 
 def register(request):
 
@@ -46,8 +45,7 @@ def register(request):
             email=email,
             blood_group=blood
         )
-        # Post/Redirect/Get: redirect to login to avoid stale CSRF tokens
-        return redirect('/login/')
+        return render(request, "register_success.html")
     return render(request,"register.html")
 # -----------------------------
 # USER LOGIN
